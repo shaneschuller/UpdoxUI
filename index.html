@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Updox UI Challenge</title>
+    <style>
+      #content{
+        background-color: #989898;
+        position: absolute;
+        width:700px;
+        height:600px;
+      }
+      .create-provider-form{
+        border-radius: 25px;
+        background: #FFF;
+        padding: 20px; 
+        width: 150px;
+        height: 150px;
+        margin: 30px 15px 30px 15px;
+      }
+      .create-provider-form input{
+
+      }
+
+      #provider-list{
+        border-radius: 25px;
+        background: #FFF;
+        padding: 20px; 
+        width: 625px;
+        height: 250px;
+        margin: 30px 15px 30px 15px;
+
+      }
+
+      #provider-table{
+        border-collapse:collapse;
+        border:1px solid #323252;
+        width:625px;
+        margin: 5px 5px 5px 5px;
+        overflow-y: scroll;
+      }
+
+      #provider-table tr:nth-child(even) {
+        background-color: #989898;
+      }
+
+      #provider-table td{
+        border:1px solid #323252;
+      }
+
+      .provider-checkbox{
+        width: 10%;
+        text-align:center;
+      }
+
+      .provider-data{
+        width: 90%;
+      }
+      
+
+
+      .name-entry{
+        font-size: 16px;
+        font-weight: bold;
+        float: left;
+        clear:left;
+        margin: 2px 0 0 5px;
+      }
+
+      .email-entry{
+        font-size: 10px;
+        float:left;
+        clear:left;
+        margin: 1px 5px 5px 5px
+      }
+
+      .practice-entry{
+        font-size: 10px;
+        float:right;
+        clear:right;
+        margin: 2px 5px 5px 0;
+      }
+
+      .specialty-entry{
+        font-size: 10px;
+        float: right;
+        clear:right;
+        margin: 1px 5px 0 0;
+      }
+
+      .buttons {
+       border: 0;
+       border-radius: 0;
+       background: #323252;
+       width: 100px;
+       color: #FFF;
+       -webkit-appearance: none;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="content">
+      <div class="create-provider-form">
+        <span>Create Provider </span>
+        <form  action="#" onsubmit="" id="search_form" >
+          <input type="text" id="lastname" name="l_name" placeholder="Last Name"/>
+          <input type="text" id="firstname" name="f_name" placeholder="First Name"/>
+          <input type="text" id="email" name="email" placeholder="Email"/>
+          <input type="text" id="specialty" name="specialty" placeholder="Specialty"/>
+          <input type="text" id="practice" name="practice" placeholder="Practice"/>
+          <input type="submit" id="submit_btn" class="buttons" value="Create"/>
+        </form>
+      </div>
+      <div id="provider-list">
+        <table id="provider-table">
+          <tr>
+            <td class="provider-checkbox">
+              <input type="checkbox" id="mharris@updox.com-check"/>
+            </td>
+            <td class="provider-data">
+                <span class="name-entry">Last Name, First Name</span>
+                <span class="specialty-entry">Specialty</span>
+                <span class="email-entry">Email Address</span>
+                <span class="practice-entry">Practice</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="provider-checkbox">
+              <input type="checkbox" id="sschuller@updox.com-check"/>
+            </td>
+            <td class="provider-data">
+                <span class="name-entry">Last Name, First Name</span>
+                <span class="specialty-entry">Specialty</span>
+                <span class="email-entry">Email Address</span>
+                <span class="practice-entry">Practice</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
