@@ -9,25 +9,42 @@
         width:700px;
         height:600px;
       }
-      .create-provider-form{
+      #create-provider-form{
+        float:left;
         border-radius: 25px;
         background: #FFF;
-        padding: 20px; 
-        width: 150px;
+        padding: 10px; 
+        width: 305px;
         height: 150px;
-        margin: 30px 15px 30px 15px;
+        margin: 30px 0 30px 15px;
+        overflow-x: hidden;
       }
-      .create-provider-form input{
+      #create-provider-form input{
+        float:left;
+        margin-bottom:2px;
+      }
 
+      #validation-message{
+        display: none;
+        float:right;
+        border-radius: 25px;
+        background: #FFF;
+        padding: 10px; 
+        width: 205px;
+        height: 150px;
+        margin: 30px 80px 30px 0;
+        overflow-x: hidden;
       }
 
       #provider-list{
+        float:left;
         border-radius: 25px;
         background: #FFF;
         padding: 20px; 
         width: 625px;
         height: 250px;
         margin: 30px 15px 30px 15px;
+        overflow: hidden;
 
       }
 
@@ -35,6 +52,7 @@
         border-collapse:collapse;
         border:1px solid #323252;
         width:625px;
+        height: 225px;
         margin: 5px 5px 5px 5px;
         overflow-y: scroll;
       }
@@ -56,8 +74,6 @@
         width: 90%;
       }
       
-
-
       .name-entry{
         font-size: 16px;
         font-weight: bold;
@@ -88,21 +104,146 @@
       }
 
       .buttons {
+       float:left;
        border: 0;
        border-radius: 0;
        background: #323252;
        width: 100px;
        color: #FFF;
-       -webkit-appearance: none;
       }
+
+      .error {
+        /*display: none;*/
+        color: #FF0000;
+        font-size: 16px;
+        font-weight: bold;
+        float:left;
+       }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+      var data = {"mharris@updox.com":{"last_name": "Harris", "first_name": "Mike", "email_address": "mharris@updox.com", "specialty": "Pediatrics", "practice_name": "Harris Pediatrics"},"bwijoyo@updox.com":{"last_name": "Wijoyo", "first_name": "Bimo", "email_address": "bwijoyo@updox.com", "specialty": "Podiatry", "practice_name": "Wijoyo Podiatry"}, "nrose@updox.com":{"last_name": "Rose", "first_name": "Nate", "email_address": "nrose@updox.com", "specialty": "Surgery", "practice_name": "Rose Cutters"},"mcarlson@updox.com":{"last_name": "Carlson", "first_name": "Mike", "email_address": "mcarlson@updox.com", "specialty": "Orthopedics", "practice_name": "Carlson Orthopedics"}, "mwitting@updox.com":{"last_name": "Witting", "first_name": "Mike", "email_address": "mwitting@updox.com", "specialty": "Pediatrics", "practice_name": "Witting’s Well Kids Pediatrics"}, "tjuday@updox.com":{"last_name": "Juday", "first_name": "Tobin", "email_address": "tjuday@updox.com", "specialty":"General Medicine", "practice_name": "Juday Family Practice"}};
+
+      var updateTable = function(){
+        $("#provider-table").empty();
+        $("#provider-table").html(buildTable());
+      }
+
+      var buildTable = function(){
+         console.log(data);
+        var rows = "";
+        for(var entry in data){
+          rows += "<tr><td class=\"provider-checkbox\"><input type=\"checkbox\" id=\""+data[entry]["email_address"]+"-check\"/></td>";
+          rows += "<td class=\"provider-data\"><span class=\"name-entry\">"+data[entry]["last_name"]+", "+data[entry]["first_name"]+"</span>";
+          rows += "<span class=\"specialty-entry\">"+data[entry]["specialty"]+"</span>";
+          rows += "<span class=\"email-entry\">"+data[entry]["email_address"]+"</span>";
+          rows += "<span class=\"practice-entry\">"+data[entry]["practice"]+"</span>";
+          rows += "</td></tr>";
+        }
+        return rows;
+      }
+
+      var validate = function(){
+        if ($("#lastname").text().length > 2 &&
+        $("#firstname").text().length > 2 &&
+        testEmail($( "#email" ).text())){
+          if(!data.hasOwnProperty($( "#email" ).text())){
+            add();
+          } 
+        } else {
+          console.log("else");
+          $("#lastname").trigger("blur");
+          $("#firstname").trigger("blur");
+          $("email").trigger("blur");
+        }
+      }
+
+      var isEmpty = function( el ){
+        return !$.trim(el.html())
+      }
+
+      var email_not_valid_html = "<span class=\"error\" class=\"email-not-valid-error\">Enter in a valid email address</span>";
+      var email_already_in_use_html = "<span class=\"error\" class=\"email-already-in-use-error\">Email already in use</span>";
+      var lastname_not_valid_html = "<span class=\"error\" class=\"lname-not-valid-error\">Last name must be more than 2 characters</span>";
+      var firstname_not_valid_html = "<span class=\"error\" class=\"fname-not-valid-error\">First name must be more than 2 characterss</span>"
+
+      var testEmail = function(email){
+        var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
+        return regex.test(email);
+      }
+
+      var add = function(){
+        var fname = $("#firstname").val();
+        var lname = $("#lastname").val();
+        var email = $("#email").val();
+        var special = $("#specialty").val();
+        var practice = $("#practice").val();
+        data[email] = {};
+        data[email].first_name = fname;
+        data[email].last_name = lname;
+        data[email].email = email;
+        data[email].special = special;
+        data[email].practice = practice;
+        updateTable();
+      }
+
+    $(document).ready(function () {
+      updateTable();
+      $("#lastname").focusout(function(){
+        if($("#lastname").val() < 3 && $(".lname-not-valid-error").length === 0){
+          $("#validation-message").show();
+          $("#validation-message").append(lastname_not_valid_html);
+          $("#submit_btn").attr('disabled','disabled');
+        } else {
+          $(".lname-not-valid-error").remove();
+          if(isEmpty($("#validation-message"))){
+            $("#validation-message").hide();
+            $("input[type=submit]").removeAttr('disabled');
+          }
+        }
+      });
+      $("#firstname").focusout(function(){
+        if($("#firstname").val() < 3 && $(".fname-not-valid-error").length === 0){
+          $("#validation-message").show();
+          $("#validation-message").append(firstname_not_valid_html);
+          $("#submit_btn").attr('disabled','disabled');
+        } else {
+          $(".fname-not-valid-error").remove();
+          if(isEmpty($("#validation-message"))){
+            $("#validation-message").hide();
+            $("input[type=submit]").removeAttr('disabled');
+          }
+        }
+      });
+      $("#email").focusout(function(){
+        if(!testEmail($( "#email" ).val()) && $(".email-not-valid-error").length === 0){
+          $("#validation-message").show();
+          $("#validation-message").append(email_not_valid_html);
+          $("#submit_btn").attr('disabled','disabled');
+        } else {
+          if(data.hasOwnProperty($( "#email" ).val())){
+            $("#validation-message").show();
+            $("#validation-message").append(email_already_in_use_html);
+            $("#submit_btn").attr('disabled','disabled');
+          } else {
+            $(".email-not-valid-error").remove();
+            $(".email-already-in-use-error").remove();
+            if(isEmpty($("#validation-message"))){
+              $("#validation-message").hide();
+              $("input[type=submit]").removeAttr('disabled');
+            }
+          }
+        }
+      });
+    });
+    </script>
   </head>
   <body>
     <div id="content">
-      <div class="create-provider-form">
+      <div id="create-provider-form">
         <span>Create Provider </span>
-        <form  action="#" onsubmit="" id="search_form" >
+        <form  action="#" onsubmit="validate()" id="search_form" >
           <input type="text" id="lastname" name="l_name" placeholder="Last Name"/>
           <input type="text" id="firstname" name="f_name" placeholder="First Name"/>
           <input type="text" id="email" name="email" placeholder="Email"/>
@@ -110,6 +251,8 @@
           <input type="text" id="practice" name="practice" placeholder="Practice"/>
           <input type="submit" id="submit_btn" class="buttons" value="Create"/>
         </form>
+      </div>
+      <div id="validation-message">
       </div>
       <div id="provider-list">
         <table id="provider-table">
